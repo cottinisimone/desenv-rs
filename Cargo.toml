@@ -1,6 +1,6 @@
-[package]
-name = "desenv-rs"
-version = "0.1.0"
-edition = "2021"
-
-[dependencies]
+[workspace]
+members = [
+    "desenv",
+    "desenv_macros",
+    "tests"
+]
