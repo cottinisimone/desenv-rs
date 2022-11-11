@@ -1,0 +1,23 @@
+[env]
+CARGO_MAKE_EXTEND_WORKSPACE_MAKEFILE = true
+
+[tasks.test]
+args = ["test", "--", "--test-threads", "1", "${@}"]
+command = "cargo"
+description = "Run tests."
+
+[tasks.lint]
+args = [
+    "clippy", "--all-targets", "--all-features", "--",
+    "-D", "warnings",
+    "-W", "clippy::all",
+    "-W", "clippy::correctness",
+    "-W", "clippy::suspicious",
+    "-W", "clippy::style",
+    "-W", "clippy::complexity",
+    "-W", "clippy::perf",
+    "-W", "clippy::pedantic",
+    "-W", "clippy::nursery",
+    "-W", "clippy::cargo"]
+command = "cargo"
+description = "Run lint"
