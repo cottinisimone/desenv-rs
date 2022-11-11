@@ -1,0 +1,4 @@
+reorder_imports = true
+reorder_modules = true
+struct_lit_width = 80
+max_width = 120
