@@ -2,12 +2,19 @@ use proc_macro::TokenStream;
 
 use proc_macro2::{Ident, Span};
 use quote::quote;
-use syn::spanned::Spanned;
 use syn::{DeriveInput, Error, Fields};
+use syn::spanned::Spanned;
+
+use crate::retainer::DeriveAttributeFilter;
+
+mod retainer;
 
 #[proc_macro_derive(Desenv, attributes(desenv))]
 pub fn derive_desenv(input: TokenStream) -> TokenStream {
-    let derive_input: DeriveInput = syn::parse_macro_input!(input as syn::DeriveInput);
+    let mut derive_input: DeriveInput = syn::parse_macro_input!(input as syn::DeriveInput);
+
+    // Remove all non-desenv attributes to avoid conflicting with other derive proc macro attributes.
+    derive_input.retain_attrs();
 
     // Create a new span to get expansion information
     let derive_input_span: Span = derive_input.span();
