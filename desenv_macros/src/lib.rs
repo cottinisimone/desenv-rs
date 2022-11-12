@@ -7,6 +7,8 @@ use syn::spanned::Spanned;
 
 use crate::retainer::DeriveAttributeFilter;
 
+#[allow(dead_code)]
+mod attr;
 mod retainer;
 
 #[proc_macro_derive(Desenv, attributes(desenv))]
