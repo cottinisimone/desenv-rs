@@ -2,8 +2,8 @@ use proc_macro::TokenStream;
 
 use proc_macro2::{Ident, Span};
 use quote::quote;
-use syn::{DeriveInput, Error, Fields};
 use syn::spanned::Spanned;
+use syn::{DeriveInput, Error, Fields};
 
 use crate::retainer::DeriveAttributeFilter;
 

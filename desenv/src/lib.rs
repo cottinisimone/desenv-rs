@@ -8,6 +8,6 @@ pub trait Desenv {
     /// # Errors
     /// -
     fn load() -> Result<Self, Error>
-        where
-            Self: Sized;
+    where
+        Self: Sized;
 }

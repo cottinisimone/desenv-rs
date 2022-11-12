@@ -1,12 +1,16 @@
 [env]
 CARGO_MAKE_EXTEND_WORKSPACE_MAKEFILE = true
 
+[tasks.checks]
+dependencies = ["format-check", "test", "clippy"]
+description = "Check if file are formatted, run tests and run clippy linting"
+
 [tasks.test]
 args = ["test", "--", "--test-threads", "1", "${@}"]
 command = "cargo"
 description = "Run tests."
 
-[tasks.lint]
+[tasks.clippy]
 args = [
     "clippy", "--all-targets", "--all-features", "--",
     "-D", "warnings",
@@ -20,4 +24,9 @@ args = [
     "-W", "clippy::nursery",
     "-W", "clippy::cargo"]
 command = "cargo"
-description = "Run lint"
+description = "Run clippy linting"
+
+[tasks.format-check]
+args = ["fmt", "--all", "--", "--check"]
+command = "cargo"
+description = "Run rustfmt checking if all files are well-formatted"
