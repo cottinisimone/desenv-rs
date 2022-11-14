@@ -1,7 +1,6 @@
 use proc_macro::TokenStream;
 
-use proc_macro2::{Ident, Span};
-use quote::quote;
+use proc_macro2::Span;
 use syn::spanned::Spanned;
 use syn::{DeriveInput, Error, Fields};
 
@@ -9,6 +8,7 @@ use crate::retainer::DeriveAttributeFilter;
 
 #[allow(dead_code)]
 mod attr;
+mod derive;
 mod retainer;
 
 #[proc_macro_derive(Desenv, attributes(desenv))]
@@ -25,18 +25,11 @@ pub fn derive_desenv(input: TokenStream) -> TokenStream {
         // Only non-tuple structs are allowed
         syn::Data::Struct(ref data_struct) => match data_struct.fields {
             // Only structs with named fields are allowed
-            Fields::Named(ref _fields) => {
-                let struct_name: &Ident = &derive_input.ident;
-                Ok(quote! {
-                    impl Desenv for #struct_name {
-                        fn _load() -> Result<Self, ::desenv::Error>
-                        where
-                            Self: Sized,
-                        {
-                            todo!()
-                        }
-                    }
-                })
+            Fields::Named(ref fields) => {
+                match attr::Struct::from_attrs(derive_input.attrs.as_slice(), derive_input.span()) {
+                    Ok(attrs) => derive::desenv(&derive_input.ident, &attrs, &fields.named),
+                    Err(err) => Err(err),
+                }
             }
             _ => Err(Error::new(
                 derive_input_span,

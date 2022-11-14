@@ -1,4 +1,5 @@
-use crate::error::Error;
+pub use desenv_macros::Desenv;
+pub use error::Error;
 
 mod error;
 
