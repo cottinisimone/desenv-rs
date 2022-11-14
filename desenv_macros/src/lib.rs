@@ -29,7 +29,7 @@ pub fn derive_desenv(input: TokenStream) -> TokenStream {
                 let struct_name: &Ident = &derive_input.ident;
                 Ok(quote! {
                     impl Desenv for #struct_name {
-                        fn load() -> Result<Self, ::desenv::Error>
+                        fn _load() -> Result<Self, ::desenv::Error>
                         where
                             Self: Sized,
                         {
