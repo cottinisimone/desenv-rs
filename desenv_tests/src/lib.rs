@@ -1,5 +1,9 @@
 #[cfg(test)]
+mod test_utils;
+
+#[cfg(test)]
 mod tests {
+    use crate::test_utils::EnvUtil;
     use desenv::Desenv;
 
     #[derive(Desenv)]
@@ -9,7 +13,7 @@ mod tests {
 
     #[test]
     fn works() {
-        std::env::set_var("FIELD", "value");
+        let _env_util: EnvUtil = EnvUtil::new("FIELD", "value".to_string());
         let c: Config = desenv::load().unwrap();
         assert_eq!(c.field, "value");
     }
@@ -21,7 +25,7 @@ mod tests {
 
     #[test]
     fn works_with_i32() {
-        std::env::set_var("FIELD", 10.to_string());
+        let _env_util: EnvUtil = EnvUtil::new("FIELD", 10.to_string());
         let c: Config2 = desenv::load().unwrap();
         assert_eq!(c.field, 10);
     }
@@ -34,13 +38,13 @@ mod tests {
 
     #[test]
     fn works_with_i32_and_prefix() {
-        std::env::set_var("PREFIX_FIELD", 10.to_string());
+        let _env_util: EnvUtil = EnvUtil::new("PREFIX_FIELD", 10.to_string());
         let c: Config3 = desenv::load().unwrap();
         assert_eq!(c.field, 10);
     }
 
     #[derive(Desenv)]
-    #[desenv(prefix = "PREFIX_")]
+    #[desenv(prefix = "PREFIX4_")]
     pub struct Config4 {
         #[desenv(nested)]
         field: Nested4,
@@ -54,7 +58,7 @@ mod tests {
     #[test]
     fn works_with_nested() {
         // TODO: this should be PREFIX_FIELD anyway
-        std::env::set_var("FIELD", "value");
+        let _env_util: EnvUtil = EnvUtil::new("PREFIX4_FIELD", "value".to_string());
         let c: Config4 = desenv::load().unwrap();
         assert_eq!(c.field.field, "value");
     }

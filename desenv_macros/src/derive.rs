@@ -16,7 +16,7 @@ pub fn desenv(
 
     Ok(quote! {
         impl Desenv for #struct_name {
-            fn _load() -> Result<Self, ::desenv::Error>
+            fn _load(parent_prefix: Option<String>) -> Result<Self, ::desenv::Error>
             where
                 Self: Sized,
             {
@@ -48,19 +48,19 @@ fn expand_field(
     struct_attr: &attr::Struct,
 ) -> Result<TokenStream, Error> {
     let field_ident: &Option<Ident> = &field.ident;
+    let current_prefix: TokenStream = current_prefix(struct_attr);
 
     if field_attr.nested {
         let field_type: &syn::Type = &field.ty;
-        Ok(quote!(#field_ident: <#field_type>::_load()?))
+        Ok(quote!(#field_ident: <#field_type>::_load(#current_prefix)?))
     } else {
         let field_identity_as_string: String = field
             .ident
             .as_ref()
             .map(ToString::to_string)
             .ok_or_else(|| Error::new(field.span(), "failed to stringify identity"))?;
-        let prefix: String = struct_attr.get_prefix();
 
-        let var_name: TokenStream = var_name(field_identity_as_string.as_str(), prefix.as_str(), field_attr);
+        let var_name: TokenStream = var_name(field_identity_as_string.as_str(), &current_prefix, field_attr);
         let token_stream: TokenStream = quote_field(&var_name, field_attr);
         Ok(quote!(#field_ident: #token_stream))
     }
@@ -72,12 +72,18 @@ fn quote_field(var_name: &TokenStream, _field_attr: &attr::Field) -> TokenStream
 
 // Returns the environment variable name that should be fetched. If could be the field name upcased
 // or the rename value (both prefixed).
-fn var_name(field_name: &str, prefix: &str, field_attr: &attr::Field) -> TokenStream {
+fn var_name(field_name: &str, current_prefix: &TokenStream, field_attr: &attr::Field) -> TokenStream {
     let var_name: String = if let attr::Field { rename: Some(rename), .. } = field_attr {
         rename.to_string()
     } else {
         field_name.to_uppercase()
     };
 
-    quote!(format!("{}{}", #prefix, #var_name))
+    quote!(format!("{}{}", #current_prefix.unwrap_or_default(), #var_name))
+}
+
+// Concat parent prefix with current prefix returning an Option<String> in the quoted code.
+fn current_prefix(struct_attr: &attr::Struct) -> TokenStream {
+    let prefix: String = struct_attr.get_prefix();
+    quote!(parent_prefix.clone().map(|v| format!("{}{}", v, #prefix)).or_else(|| Some(#prefix.to_string())))
 }

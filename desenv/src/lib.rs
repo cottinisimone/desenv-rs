@@ -11,7 +11,7 @@ pub fn load<T>() -> Result<T, Error>
 where
     T: Desenv,
 {
-    T::_load()
+    T::_load(None)
 }
 
 pub trait Desenv {
@@ -19,7 +19,7 @@ pub trait Desenv {
     ///
     /// # Errors
     /// -
-    fn _load() -> Result<Self, Error>
+    fn _load(parent_prefix: Option<String>) -> Result<Self, Error>
     where
         Self: Sized;
 }
