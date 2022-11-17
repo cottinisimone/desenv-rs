@@ -10,6 +10,7 @@ use crate::retainer::DeriveAttributeFilter;
 mod attr;
 mod derive;
 mod retainer;
+mod ty;
 
 #[proc_macro_derive(Desenv, attributes(desenv))]
 pub fn derive_desenv(input: TokenStream) -> TokenStream {

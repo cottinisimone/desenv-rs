@@ -6,6 +6,7 @@ use syn::token::Comma;
 use syn::Error;
 
 use crate::attr;
+use crate::ty::Type;
 
 pub fn desenv(
     struct_name: &Ident,
@@ -61,12 +62,21 @@ fn expand_field(
             .ok_or_else(|| Error::new(field.span(), "failed to stringify identity"))?;
 
         let var_name: TokenStream = var_name(field_identity_as_string.as_str(), &current_prefix, field_attr);
-        let token_stream: TokenStream = quote_field(&var_name, field_attr);
+        let ty: Type = Type::from_field(field);
+        let token_stream: TokenStream = quote_field(&ty, &var_name, field_attr);
+
         Ok(quote!(#field_ident: #token_stream))
     }
 }
 
-fn quote_field(var_name: &TokenStream, field_attr: &attr::Field) -> TokenStream {
+fn quote_field(ty: &Type, var_name: &TokenStream, field_attr: &attr::Field) -> TokenStream {
+    match ty {
+        Type::Option => var_opt(var_name, field_attr),
+        Type::Other => var(var_name, field_attr),
+    }
+}
+
+fn var(var_name: &TokenStream, field_attr: &attr::Field) -> TokenStream {
     let parse_token: TokenStream = parse_early_return();
 
     match &field_attr.default {
@@ -89,6 +99,25 @@ fn quote_field(var_name: &TokenStream, field_attr: &attr::Field) -> TokenStream 
         None => {
             let map_err_token: TokenStream = map_err_early_return(var_name);
             quote!(std::env::var(#var_name.as_str()) #map_err_token #parse_token)
+        }
+    }
+}
+
+fn var_opt(var_name: &TokenStream, field_attr: &attr::Field) -> TokenStream {
+    let parse_token: TokenStream = parse_early_return();
+
+    let default_token: TokenStream = match &field_attr.default {
+        Some(attr::Default::Std) => quote!(Some(Default::default())),
+        Some(attr::Default::Value(value)) => quote!(Some(#value.to_string())),
+        Some(attr::Default::Env(env_var)) => quote!(std::env::var(#env_var).ok()),
+        None => quote!(None),
+    };
+
+    quote! {
+        match std::env::var(#var_name.as_str()) {
+            Ok(var) => Some(var #parse_token),
+            Err(std::env::VarError::NotPresent) => #default_token,
+            Err(std::env::VarError::NotUnicode(_)) => return Err(::desenv::Error::NotUnicodeVar(#var_name)),
         }
     }
 }

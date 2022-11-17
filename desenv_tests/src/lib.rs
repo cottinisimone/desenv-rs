@@ -44,7 +44,7 @@ mod tests {
     }
 
     #[derive(Desenv)]
-    #[desenv(prefix = "PREFIX4_")]
+    #[desenv(prefix = "PREFIX_")]
     pub struct Config4 {
         #[desenv(nested)]
         field: Nested4,
@@ -57,8 +57,21 @@ mod tests {
 
     #[test]
     fn works_with_nested() {
-        let _env_util: EnvUtil = EnvUtil::new("PREFIX4_FIELD", "value".to_string());
+        let _env_util: EnvUtil = EnvUtil::new("PREFIX_FIELD", "value".to_string());
         let c: Config4 = desenv::load().unwrap();
         assert_eq!(c.field.field, "value");
+    }
+
+    #[derive(Desenv)]
+    pub struct Config5 {
+        field: Option<String>,
+    }
+
+    #[test]
+    fn works_with_optional() {
+        let _env_util: EnvUtil = EnvUtil::new("FIELD", "value".to_string());
+        let c: Config5 = desenv::load().unwrap();
+        assert!(c.field.is_some());
+        assert_eq!(c.field.unwrap(), "value");
     }
 }
