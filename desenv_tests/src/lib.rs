@@ -57,7 +57,6 @@ mod tests {
 
     #[test]
     fn works_with_nested() {
-        // TODO: this should be PREFIX_FIELD anyway
         let _env_util: EnvUtil = EnvUtil::new("PREFIX4_FIELD", "value".to_string());
         let c: Config4 = desenv::load().unwrap();
         assert_eq!(c.field.field, "value");

@@ -66,8 +66,42 @@ fn expand_field(
     }
 }
 
-fn quote_field(var_name: &TokenStream, _field_attr: &attr::Field) -> TokenStream {
-    quote!(std::env::var(#var_name.as_str()).unwrap().parse().unwrap())
+fn quote_field(var_name: &TokenStream, field_attr: &attr::Field) -> TokenStream {
+    let parse_token: TokenStream = parse_early_return();
+
+    match &field_attr.default {
+        Some(attr::Default::Std) => quote! {
+            std::env::var(#var_name.as_str()).unwrap_or_default() #parse_token
+        },
+        Some(attr::Default::Value(value)) => quote! {
+            std::env::var(#var_name.as_str()).unwrap_or(#value.to_string()) #parse_token
+        },
+        Some(attr::Default::Env(env_var)) => {
+            let map_err_token: TokenStream = map_err_early_return(var_name);
+            quote! {
+                match std::env::var(#var_name.as_str()) {
+                    Ok(var) => var #parse_token,
+                    Err(std::env::VarError::NotUnicode(_)) => return Err(::desenv::Error::NotUnicodeVar(#var_name)),
+                    Err(std::env::VarError::NotPresent) => std::env::var(#env_var) #map_err_token #parse_token,
+                }
+            }
+        }
+        None => {
+            let map_err_token: TokenStream = map_err_early_return(var_name);
+            quote!(std::env::var(#var_name.as_str()) #map_err_token #parse_token)
+        }
+    }
+}
+
+fn map_err_early_return(var_name: &TokenStream) -> TokenStream {
+    quote!(.map_err(|err| match err {
+        std::env::VarError::NotPresent => ::desenv::Error::MissingVar(#var_name),
+        std::env::VarError::NotUnicode(_) => ::desenv::Error::NotUnicodeVar(#var_name),
+    })?)
+}
+
+fn parse_early_return() -> TokenStream {
+    quote!(.parse().map_err(|error| ::desenv::Error::ParseFromStr(format!("{:?}", error)))?)
 }
 
 // Returns the environment variable name that should be fetched. If could be the field name upcased
