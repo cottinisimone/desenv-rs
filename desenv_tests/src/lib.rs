@@ -74,4 +74,16 @@ mod tests {
         assert!(c.field.is_some());
         assert_eq!(c.field.unwrap(), "value");
     }
+
+    #[derive(Desenv)]
+    pub struct Config6 {
+        field: Vec<String>,
+    }
+
+    #[test]
+    fn works_with_vector() {
+        let _env_util: EnvUtil = EnvUtil::new("FIELD", "value1,value2".to_string());
+        let c: Config6 = desenv::load().unwrap();
+        assert_eq!(c.field, vec!["value1", "value2"]);
+    }
 }

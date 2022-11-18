@@ -1,6 +1,7 @@
 #[derive(Eq, PartialEq)]
 pub enum Type {
     Option,
+    Vector,
     Other,
 }
 
@@ -10,6 +11,7 @@ impl Type {
 
         match quote::quote!(#ty).to_string().as_str() {
             s if s.starts_with("Option <") => Self::Option,
+            s if s.starts_with("Vec < ") => Self::Vector,
             _ => Self::Other,
         }
     }
