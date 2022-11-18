@@ -73,6 +73,7 @@ fn expand_field(
 
 fn quote_field(ty: &Type, var_name: &TokenStream, field_attr: &attr::Field) -> TokenStream {
     match ty {
+        Type::OsString => var_os(var_name),
         Type::Option => var_opt(var_name, field_attr),
         Type::Vector => var_vec(var_name, field_attr),
         Type::Other => var(var_name, field_attr),
@@ -104,6 +105,10 @@ fn var(var_name: &TokenStream, field_attr: &attr::Field) -> TokenStream {
             quote!(std::env::var(#var_name.as_str()) #map_err_token? #parse_token?)
         }
     }
+}
+
+fn var_os(var_name: &TokenStream) -> TokenStream {
+    quote!(std::env::var_os(#var_name.as_str()).ok_or(::desenv::Error::MissingVar(#var_name))?)
 }
 
 fn var_opt(var_name: &TokenStream, field_attr: &attr::Field) -> TokenStream {

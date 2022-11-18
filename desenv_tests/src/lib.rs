@@ -5,6 +5,7 @@ mod test_utils;
 mod tests {
     use crate::test_utils::EnvUtil;
     use desenv::Desenv;
+    use std::ffi::OsString;
 
     #[derive(Desenv)]
     pub struct Config {
@@ -85,5 +86,17 @@ mod tests {
         let _env_util: EnvUtil = EnvUtil::new("FIELD", "value1,value2".to_string());
         let c: Config6 = desenv::load().unwrap();
         assert_eq!(c.field, vec!["value1", "value2"]);
+    }
+
+    #[derive(Desenv)]
+    pub struct Config7 {
+        field: OsString,
+    }
+
+    #[test]
+    fn works_with_os_strings() {
+        let _env_util: EnvUtil = EnvUtil::new("FIELD", "value".to_string());
+        let c: Config7 = desenv::load().unwrap();
+        assert_eq!(c.field, "value");
     }
 }
