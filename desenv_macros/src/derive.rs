@@ -51,11 +51,17 @@ fn expand_field(
     struct_attr: &attr::Struct,
 ) -> Result<TokenStream, Error> {
     let field_ident: &Option<Ident> = &field.ident;
+    let ty: Type = Type::from_field(field);
     let current_prefix: TokenStream = current_prefix(struct_attr);
 
     if field_attr.nested {
         let field_type: &syn::Type = &field.ty;
         Ok(quote!(#field_ident: <#field_type>::_load(#current_prefix)?))
+    } else if field_attr.separator.is_some() && ty != Type::Vector {
+        Err(Error::new(
+            field.span(),
+            "`separator` modifier can be used on vector only",
+        ))
     } else {
         let field_identity_as_string: String = field
             .ident
@@ -64,7 +70,6 @@ fn expand_field(
             .ok_or_else(|| Error::new(field.span(), "failed to stringify identity"))?;
 
         let var_name: TokenStream = var_name(field_identity_as_string.as_str(), &current_prefix, field_attr);
-        let ty: Type = Type::from_field(field);
         let token_stream: TokenStream = quote_field(&ty, &var_name, field_attr);
 
         Ok(quote!(#field_ident: #token_stream))
