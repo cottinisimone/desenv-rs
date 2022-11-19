@@ -1,0 +1,5 @@
+error: `prefix` modifier cannot be used as list. Usage: `#[desenv(prefix = "value")]`
+ --> test-assets/struct/failure/prefix_wrong_usage_2.rs:4:10
+  |
+4 | #[desenv(prefix(value = ""))]
+  |          ^^^^^^

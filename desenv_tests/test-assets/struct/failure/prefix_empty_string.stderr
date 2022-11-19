@@ -1,0 +1,5 @@
+error: `prefix` modifiers must not be empty
+ --> test-assets/struct/failure/prefix_empty_string.rs:4:1
+  |
+4 | #[desenv(prefix = "")]
+  | ^

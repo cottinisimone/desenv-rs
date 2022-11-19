@@ -1,0 +1,5 @@
+error: `prefix` modifier must contain a string literal
+ --> test-assets/struct/failure/prefix_value_not_string.rs:4:19
+  |
+4 | #[desenv(prefix = '_')]
+  |                   ^^^
