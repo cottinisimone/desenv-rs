@@ -1,11 +1,16 @@
 use std::fmt::{Debug, Display, Formatter, Result};
 
-#[derive(Debug)]
 pub enum Error {
     MissingVar(String),
     NotUnicodeVar(String),
     ParseFromStr(String),
     Custom(String),
+}
+
+impl Debug for Error {
+    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+        write!(f, "{}", self)
+    }
 }
 
 impl Display for Error {

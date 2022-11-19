@@ -5,8 +5,8 @@ pub struct EnvUtil {
 
 impl EnvUtil {
     #[must_use]
-    pub fn new(env: &str, value: String) -> Self {
-        std::env::set_var(env, value);
+    pub fn new<K: AsRef<std::ffi::OsStr>>(env: &str, value: K) -> Self {
+        std::env::set_var(env, value.as_ref());
         Self { envs: vec![env.to_string()] }
     }
 }
