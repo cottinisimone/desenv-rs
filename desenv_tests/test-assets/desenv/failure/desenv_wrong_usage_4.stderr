@@ -1,0 +1,5 @@
+error: `desenv` struct attribute must be used as list of modifiers
+ --> test-assets/desenv/failure/desenv_wrong_usage_4.rs:4:3
+  |
+4 | #[desenv = "hello"]
+  |   ^^^^^^

@@ -1,4 +1,6 @@
 #[cfg(test)]
+mod compile;
+#[cfg(test)]
 mod default;
 #[cfg(test)]
 mod nested;

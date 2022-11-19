@@ -1,0 +1,5 @@
+error: `desenv` field attribute must be used as list of modifiers
+ --> test-assets/desenv/failure/desenv_wrong_usage_1.rs:5:7
+  |
+5 |     #[desenv]
+  |       ^^^^^^

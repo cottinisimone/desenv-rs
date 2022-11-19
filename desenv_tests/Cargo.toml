@@ -13,3 +13,6 @@ version = "0.0.0"
 
 [dependencies]
 desenv = { path = "../desenv" }
+
+[dev-dependencies]
+trybuild = "1.0"

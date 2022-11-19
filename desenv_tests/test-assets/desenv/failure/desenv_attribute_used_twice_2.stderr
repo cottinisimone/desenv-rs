@@ -1,0 +1,5 @@
+error: cannot have more than one `desenv` attribute per struct
+ --> test-assets/desenv/failure/desenv_attribute_used_twice_2.rs:4:1
+  |
+4 | #[desenv(prefix = "PREFIX_")]
+  | ^

@@ -1,0 +1,5 @@
+error: cannot have more than one `desenv` attribute per field
+ --> test-assets/desenv/failure/desenv_attribute_used_twice_1.rs:5:5
+  |
+5 |     #[desenv(default)]
+  |     ^
