@@ -1,0 +1,5 @@
+error: `default.value` modifier must contain a string literal
+ --> test-assets/field/failure/default_value_not_string.rs:5:30
+  |
+5 |     #[desenv(default(value = ','))]
+  |                              ^^^

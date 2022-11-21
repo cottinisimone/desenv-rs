@@ -1,0 +1,5 @@
+error: `rename` modifier cannot be used as path. Usage: `#[desenv(rename = "value")]`
+ --> test-assets/field/failure/rename_wrong_usage_1.rs:5:14
+  |
+5 |     #[desenv(rename)]
+  |              ^^^^^^

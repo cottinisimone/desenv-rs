@@ -1,0 +1,5 @@
+error: `separator` modifier can be used on vector only
+ --> test-assets/field/failure/separator_not_used_on_vec.rs:5:5
+  |
+5 |     #[desenv(separator = ',')]
+  |     ^

@@ -1,0 +1,5 @@
+error: cannot set `rename` or `separator` modifiers on a field marked as `nested`
+ --> test-assets/field/failure/nested_with_additional_modifiers.rs:5:5
+  |
+5 |     #[desenv(nested, rename = "renamed")]
+  |     ^

@@ -1,0 +1,5 @@
+error: `rename` modifiers must not be empty
+ --> test-assets/field/failure/rename_empty_string.rs:5:5
+  |
+5 |     #[desenv(rename = "")]
+  |     ^

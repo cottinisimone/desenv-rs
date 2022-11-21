@@ -1,0 +1,5 @@
+error: cannot set `default` with env modifier on a field marked as `nested`
+ --> test-assets/field/failure/nested_with_default_env.rs:5:5
+  |
+5 |     #[desenv(nested, default(env = "env"))]
+  |     ^

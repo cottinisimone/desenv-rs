@@ -1,0 +1,5 @@
+error: unknown field attribute modifier `non_existing`
+ --> test-assets/field/failure/non_existing_field_modifier.rs:5:14
+  |
+5 |     #[desenv(non_existing = ',')]
+  |              ^^^^^^^^^^^^

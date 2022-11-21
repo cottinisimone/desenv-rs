@@ -1,0 +1,7 @@
+error[E0599]: no associated item named `_load` found for struct `String` in the current scope
+ --> test-assets/field/failure/nested_not_used_on_desenv_type.rs:3:10
+  |
+3 | #[derive(Desenv)]
+  |          ^^^^^^ associated item not found in `String`
+  |
+  = note: this error originates in the derive macro `Desenv` (in Nightly builds, run with -Z macro-backtrace for more info)

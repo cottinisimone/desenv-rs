@@ -1,0 +1,5 @@
+error: `default.env` modifier must contain a string literal
+ --> test-assets/field/failure/default_env_not_string.rs:5:28
+  |
+5 |     #[desenv(default(env = 0))]
+  |                            ^

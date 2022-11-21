@@ -1,0 +1,5 @@
+error: `separator` modifier cannot be used as path. Usage: `#[desenv(separator = ',')]`
+ --> test-assets/field/failure/separator_wrong_usage_1.rs:5:14
+  |
+5 |     #[desenv(separator)]
+  |              ^^^^^^^^^

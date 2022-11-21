@@ -1,0 +1,5 @@
+error: `default` modifier cannot be used as named value. Usage: `#[desenv(default)] or #[desenv(default(value = "value"))] or #[desenv(default(env = "ENV"))]`
+ --> test-assets/field/failure/default_wrong_usage_1.rs:5:14
+  |
+5 |     #[desenv(default = "value")]
+  |              ^^^^^^^

@@ -1,0 +1,5 @@
+error: `nested` modifier cannot be used as named value. Usage: `#[desenv(nested)]`
+ --> test-assets/field/failure/nested_wrong_usage_1.rs:5:14
+  |
+5 |     #[desenv(nested = true)]
+  |              ^^^^^^

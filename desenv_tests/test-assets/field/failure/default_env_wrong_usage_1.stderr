@@ -1,0 +1,5 @@
+error: `default` modifier cannot contain a path modifier
+ --> test-assets/field/failure/default_env_wrong_usage_1.rs:5:14
+  |
+5 |     #[desenv(default(env))]
+  |              ^^^^^^^

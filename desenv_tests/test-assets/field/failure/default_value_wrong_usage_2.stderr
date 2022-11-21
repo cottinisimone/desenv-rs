@@ -1,0 +1,5 @@
+error: `default` modifier cannot contain a list modifier
+ --> test-assets/field/failure/default_value_wrong_usage_2.rs:5:14
+  |
+5 |     #[desenv(default(value(value = "value")))]
+  |              ^^^^^^^

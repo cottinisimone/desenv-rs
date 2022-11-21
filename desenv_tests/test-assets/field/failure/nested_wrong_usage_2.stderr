@@ -1,0 +1,5 @@
+error: `nested` modifier cannot be used as list. Usage: `#[desenv(nested)]`
+ --> test-assets/field/failure/nested_wrong_usage_2.rs:5:14
+  |
+5 |     #[desenv(nested(value = true))]
+  |              ^^^^^^

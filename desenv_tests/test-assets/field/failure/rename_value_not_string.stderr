@@ -1,0 +1,5 @@
+error: `rename` modifier must contain a string literal. Usage: `#[desenv(rename = "value")]`
+ --> test-assets/field/failure/rename_value_not_string.rs:5:14
+  |
+5 |     #[desenv(rename = ',')]
+  |              ^^^^^^

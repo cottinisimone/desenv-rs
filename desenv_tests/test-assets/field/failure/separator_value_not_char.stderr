@@ -1,0 +1,5 @@
+error: `separator` modifier must contain a char literal. Usage: `#[desenv(separator = ',')]`
+ --> test-assets/field/failure/separator_value_not_char.rs:5:14
+  |
+5 |     #[desenv(separator = 1)]
+  |              ^^^^^^^^^
