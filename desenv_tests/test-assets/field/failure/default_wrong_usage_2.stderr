@@ -1,5 +1,0 @@
-error: `default` modifier cannot contain more than one modifier
- --> test-assets/field/failure/default_wrong_usage_2.rs:5:14
-  |
-5 |     #[desenv(default(value = "value", env = "ENV"))]
-  |              ^^^^^^^

@@ -14,10 +14,10 @@ desenv = "0.1.0"
 
 ## Usage
 
-The library expose a utility function to load the configuration from enviroment variables
+The library expose a utility function to load the configuration from environment variables
 ```rust
 fn main() {
-    let config: Config = desenv::load().expect("Failed to load configuration");
+    let _config: Config = desenv::load().expect("Failed to load configuration");
 }
 ```
 
@@ -33,7 +33,7 @@ pub struct Config {
 }
 ```
 
-In order to have a successful loaded `Config`uration it's needed that in the env there are two variables:
+In order to have a successful loaded `Config` it's needed that in the env there are two variables:
 - `FIELD1`
 - `FIELD2`
 
@@ -56,7 +56,7 @@ pub struct Config {
 }
 ```
 
-Pay attention because rename attribute is case sensitive. So in an example like the above one the library will try to find
+Pay attention because rename attribute is case-sensitive. So in an example like the above one the library will try to find
 an environment variable called `downcased_field_1`.
 
 ```rust
@@ -64,7 +64,7 @@ use desenv::Desenv;
 
 #[derive(Desenv)]
 pub struct Config {
-    #[desenv(rename = "downcased_field_1")]
+    #[desenv(rename = "down_case_field_1")]
     field1: String,
 }
 ```
@@ -82,6 +82,18 @@ use desenv::Desenv;
 
 #[derive(Desenv)]
 pub struct Config {
+    #[desenv(default = "value")]
+    field1: String,
+}
+```
+
+or
+
+```rust
+use desenv::Desenv;
+
+#[derive(Desenv)]
+pub struct Config {
     #[desenv(default(value = "value"))]
     field1: String,
 }
@@ -90,7 +102,7 @@ pub struct Config {
 #### With env
 
 If the `FIELD1` environment variable does not exist the library will try to load, as fallback, the `FALLBACK_FIELD1`
-environment variable. If `FALLBACK_FIELD1` does not exist too the load will fail.
+environment variable. If `FALLBACK_FIELD1` does not exist too, then the load will fail.
 
 ```rust
 use desenv::Desenv;

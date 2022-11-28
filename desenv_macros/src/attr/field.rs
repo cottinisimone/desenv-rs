@@ -15,7 +15,7 @@ const NESTED_USAGE: &str = "#[desenv(nested)]";
 
 const DEFAULT: &str = "default";
 const DEFAULT_USAGE: &str =
-    "#[desenv(default)] or #[desenv(default(value = \"value\"))] or #[desenv(default(env = \"ENV\"))]";
+    "#[desenv(default)], #[desenv(default = \"value\")], #[desenv(default(value = \"value\"))] or #[desenv(default(env = \"ENV\"))]";
 
 pub struct Field {
     pub rename: Option<String>,
@@ -119,11 +119,14 @@ fn parse_name_value(mut this: Field, name_value: MetaNameValue, span: Span) -> R
         MetaNameValue { path, lit: Lit::Char(lit), .. } if path.is_ident(SEPARATOR) => {
             this.separator = Some(lit.value());
         }
-        MetaNameValue { path, .. } if path.is_ident(SEPARATOR) => {
-            return Err(Error::new(span, lit_error("char", SEPARATOR, SEPARATOR_USAGE)))
+        MetaNameValue { path, lit: Lit::Str(lit), .. } if path.is_ident(DEFAULT) => {
+            this.default = Some(Default::Value(lit.value()));
         }
         MetaNameValue { path, .. } if path.is_ident(DEFAULT) => {
-            return Err(Error::new(span, usage_error(ty, DEFAULT, DEFAULT_USAGE)))
+            return Err(Error::new(span, lit_error("string", DEFAULT, DEFAULT_USAGE)))
+        }
+        MetaNameValue { path, .. } if path.is_ident(SEPARATOR) => {
+            return Err(Error::new(span, lit_error("char", SEPARATOR, SEPARATOR_USAGE)))
         }
         MetaNameValue { path, .. } if path.is_ident(NESTED) => {
             return Err(Error::new(span, usage_error(ty, NESTED, NESTED_USAGE)))
