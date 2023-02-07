@@ -7,9 +7,9 @@ keywords = ["configuration", "config", "macro"]
 license = "MIT OR Apache-2.0"
 name = "desenv"
 readme = "README.md"
-repository = "https://github.com/cottinisimone/desenv"
+repository = "https://github.com/cottinisimone/desenv-rs"
 rust-version = "1.58.0"
 version = "0.1.0"
 
 [dependencies]
-desenv_macros = { path = "../desenv_macros" }
+desenv_macros = { version = "0.1.0", path = "../desenv_macros" }
